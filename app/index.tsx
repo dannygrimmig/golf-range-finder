@@ -7,20 +7,18 @@ import {
   View,
   StyleSheet,
   Alert,
+  TextInput,
 } from "react-native";
 
 export default function Index() {
+  // managed
   const [search, setSearch] = React.useState("");
-  const [filteredCourses, setFilteredCourses] =
-    React.useState<Course[]>(fakeCourses);
+  const [courses, setCourses] = React.useState<Course[]>(fakeCourses);
 
-  const updateSearch = (text: string) => {
-    setSearch(text);
-    const filtered = fakeCourses.filter((course) =>
-      course.name.toLowerCase().includes(text.toLowerCase())
-    );
-    setFilteredCourses(filtered);
-  };
+  // derived
+  const filteredCourses = courses.filter((course) =>
+    course.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <View
@@ -28,13 +26,20 @@ export default function Index() {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: "white",
       }}
     >
+      <TextInput
+        onChangeText={(text) => setSearch(text)}
+        value={search}
+        style={indexStyles.input}
+        placeholder="search courses"
+      />
+
       <FlatList
         data={filteredCourses}
         renderItem={({ item }) => <Course course={item} />}
         style={{
-          backgroundColor: "white",
           width: "100%",
           paddingHorizontal: 24,
         }}
@@ -42,6 +47,17 @@ export default function Index() {
     </View>
   );
 }
+
+const indexStyles = StyleSheet.create({
+  input: {
+    width: "95%",
+    height: 40,
+    borderWidth: 1,
+    borderRadius: 4,
+    padding: 10,
+    fontFamily: "OutfitSemiBold",
+  },
+});
 
 type Course = {
   id: string;
