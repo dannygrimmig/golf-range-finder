@@ -3,12 +3,17 @@ import { FlatList, View, StyleSheet, TextInput } from "react-native";
 
 import { CourseSearchCard } from "@/components/CourseSearchCard";
 import { Course } from "@/definitions/course";
-import { fakeCourses } from "@/constants/sampleCourses";
+import { getCourses } from "@/api/service";
 
 export default function Index() {
   // managed
   const [search, setSearch] = React.useState("");
-  const [courses, setCourses] = React.useState<Course[]>(fakeCourses);
+  const [courses, setCourses] = React.useState<Course[]>([]);
+
+  React.useEffect(() => {
+    const mockFetchData = getCourses();
+    setCourses(mockFetchData);
+  });
 
   // derived
   const filteredCourses = courses.filter((course) =>
@@ -50,6 +55,6 @@ const indexStyles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
     padding: 10,
-    fontFamily: "OutfitSemiBold",
+    fontFamily: "OutfitRegular",
   },
 });
