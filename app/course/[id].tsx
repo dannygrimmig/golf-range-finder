@@ -33,10 +33,61 @@ export default function Page() {
 
       <View
         style={{
-          padding: 32,
+          padding: 16,
+          backgroundColor: "lightgray",
+          borderRadius: 32,
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-around",
         }}
       >
-        <Text>botom</Text>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: "OutfitRegular",
+              fontSize: 32,
+            }}
+          >
+            1
+          </Text>
+          <Text
+            style={{
+              fontFamily: "OutfitLight",
+            }}
+          >
+            Hole
+          </Text>
+        </View>
+
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: "OutfitRegular",
+              fontSize: 32,
+            }}
+          >
+            3
+          </Text>
+          <Text
+            style={{
+              fontFamily: "OutfitLight",
+            }}
+          >
+            Par
+          </Text>
+        </View>
       </View>
     </View>
   );
