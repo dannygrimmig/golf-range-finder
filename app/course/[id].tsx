@@ -4,6 +4,8 @@ import { useLocalSearchParams } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 import { getCourseById } from "@/api/service";
 import { Course } from "@/definitions/course";
+import { CourseHeader } from "@/components/CourseHeader";
+import { Distances } from "@/components/Distances";
 
 export default function Page() {
   // imported
@@ -18,35 +20,24 @@ export default function Page() {
   return (
     <View
       style={{
+        display: "flex",
+        flexDirection: "column",
         flex: 1,
         padding: 16,
         backgroundColor: "white",
       }}
     >
       <CourseHeader course={course} />
+
+      <Distances front={104} middle={115} back={119} />
+
+      <View
+        style={{
+          padding: 32,
+        }}
+      >
+        <Text>botom</Text>
+      </View>
     </View>
   );
 }
-
-function CourseHeader(props: { course: Course }) {
-  const { course } = props;
-
-  return (
-    <View style={styles.header}>
-      <Text style={styles.course_name}>{course?.name}</Text>
-      <Text style={styles.course_location}>{course?.location}</Text>
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  header: {},
-  course_name: {
-    fontSize: 16,
-    fontFamily: "OutfitSemiBold",
-  },
-  course_location: {
-    fontSize: 14,
-    fontFamily: "OutfitLight",
-  },
-});
