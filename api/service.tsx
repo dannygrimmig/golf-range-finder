@@ -1,4 +1,5 @@
 import { fakeCourses } from "@/constants/sampleCourses";
+import { Coords } from "@/definitions/hole";
 
 // Get Courses
 export const getCourses = () => {
@@ -11,7 +12,6 @@ export const getCourseById = (id: string) => {
 };
 
 // Calculate Distance
-export type Coords = { lat: number; long: number };
 export function calculateDistanceInYards(
   currentLocation: Coords,
   destinationLocation: Coords

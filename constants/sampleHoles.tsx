@@ -1,4 +1,4 @@
-import { Coords } from "@/api/service";
+import { Hole } from "@/definitions/hole";
 
 export const sampleHoles: Hole[] = [
   {
@@ -74,9 +74,3 @@ export const sampleHoles: Hole[] = [
     },
   },
 ];
-
-export type Hole = {
-  hole: number;
-  par: number;
-  coords: Coords;
-};
