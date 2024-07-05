@@ -1,21 +1,34 @@
 import * as React from "react";
 
 import { useLocalSearchParams } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { View } from "react-native";
 import { getCourseById } from "@/api/service";
-import { Course } from "@/definitions/course";
 import { CourseHeader } from "@/components/CourseHeader";
 import { Distances } from "@/components/Distances";
+import { HoleDetails } from "@/components/HoleDetails";
+import { sampleHoles } from "@/constants/sampleHoles";
 
 export default function Page() {
   // imported
   const { id } = useLocalSearchParams();
 
   // managed
-  const [currentHole, setCurrentHole] = React.useState<number>(1);
+  const [currentHole, setCurrentHole] = React.useState<number>(0);
 
   // derived
   const course = getCourseById(id);
+
+  const onHoleChange = (direction: "up" | "down") => {
+    if (direction === "up") {
+      currentHole + 1 === sampleHoles.length
+        ? setCurrentHole(0)
+        : setCurrentHole(currentHole + 1);
+    } else {
+      currentHole - 1 < 0
+        ? setCurrentHole(sampleHoles.length - 1)
+        : setCurrentHole(currentHole - 1);
+    }
+  };
 
   return (
     <View
@@ -31,64 +44,11 @@ export default function Page() {
 
       <Distances front={104} middle={115} back={119} />
 
-      <View
-        style={{
-          padding: 16,
-          backgroundColor: "lightgray",
-          borderRadius: 32,
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-around",
-        }}
-      >
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Text
-            style={{
-              fontFamily: "OutfitRegular",
-              fontSize: 32,
-            }}
-          >
-            1
-          </Text>
-          <Text
-            style={{
-              fontFamily: "OutfitLight",
-            }}
-          >
-            Hole
-          </Text>
-        </View>
-
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Text
-            style={{
-              fontFamily: "OutfitRegular",
-              fontSize: 32,
-            }}
-          >
-            3
-          </Text>
-          <Text
-            style={{
-              fontFamily: "OutfitLight",
-            }}
-          >
-            Par
-          </Text>
-        </View>
-      </View>
+      <HoleDetails
+        hole={sampleHoles[currentHole].hole}
+        par={sampleHoles[currentHole].par}
+        onHoleChange={onHoleChange}
+      />
     </View>
   );
 }
