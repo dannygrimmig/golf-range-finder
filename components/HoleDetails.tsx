@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 export function HoleDetails(props: {
   hole: number;
@@ -15,24 +15,20 @@ export function HoleDetails(props: {
         borderRadius: 32,
         display: "flex",
         flexDirection: "row",
-        justifyContent: "space-around",
+        justifyContent: "space-between",
         alignItems: "center",
       }}
     >
-      <Text
-        style={{ fontFamily: "OutfitLight" }}
-        onPress={() => onHoleChange("down")}
-      >
-        Last
-      </Text>
+      <Pressable onPress={() => onHoleChange("up")} style={{ padding: 16 }}>
+        <Text style={{ fontFamily: "OutfitLight" }}>Last</Text>
+      </Pressable>
+
       <HoleDetail detail={hole} description="Hole" />
       <HoleDetail detail={par} description="Par" />
-      <Text
-        style={{ fontFamily: "OutfitLight" }}
-        onPress={() => onHoleChange("up")}
-      >
-        Next
-      </Text>
+
+      <Pressable onPress={() => onHoleChange("up")} style={{ padding: 16 }}>
+        <Text style={{ fontFamily: "OutfitLight" }}>Next</Text>
+      </Pressable>
     </View>
   );
 }
