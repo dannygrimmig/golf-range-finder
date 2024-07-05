@@ -17,9 +17,18 @@ export function Distances(props: {
       }}
     >
       <View>
-        <Text style={styles.front_back}>{back}</Text>
-        <Text style={styles.middle}>{middle}</Text>
-        <Text style={styles.front_back}>{front}</Text>
+        <View>
+          <Text style={styles.front_back}>{back}</Text>
+          <Text style={styles.label}>BACK</Text>
+        </View>
+        <View>
+          <Text style={styles.middle}>{middle}</Text>
+          <Text style={styles.label}>MIDDLE</Text>
+        </View>
+        <View>
+          <Text style={styles.front_back}>{front}</Text>
+          <Text style={styles.label}>FRONT</Text>
+        </View>
       </View>
     </View>
   );
@@ -29,11 +38,17 @@ const styles = StyleSheet.create({
   middle: {
     fontSize: 112,
     padding: 0,
+    textAlign: "right",
     fontFamily: "OutfitRegular",
   },
   front_back: {
     fontSize: 64,
     textAlign: "right",
     fontFamily: "OutfitLight",
+  },
+  label: {
+    fontSize: 12,
+    fontFamily: "OutfitLight",
+    textAlign: "right",
   },
 });
