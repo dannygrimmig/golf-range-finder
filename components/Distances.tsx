@@ -27,12 +27,12 @@ export function Distances(props: {
 
 const styles = StyleSheet.create({
   middle: {
-    fontSize: 224,
+    fontSize: 112,
     padding: 0,
     fontFamily: "OutfitRegular",
   },
   front_back: {
-    fontSize: 112,
+    fontSize: 64,
     textAlign: "right",
     fontFamily: "OutfitLight",
   },

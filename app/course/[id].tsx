@@ -1,8 +1,14 @@
 import * as React from "react";
+import * as Location from "expo-location";
 
 import { useLocalSearchParams } from "expo-router";
 import { View } from "react-native";
-import { getCourseById } from "@/api/service";
+import {
+  calculateDistanceInYards,
+  Coords,
+  getCourseById,
+  roundNumber,
+} from "@/api/service";
 import { CourseHeader } from "@/components/CourseHeader";
 import { Distances } from "@/components/Distances";
 import { HoleDetails } from "@/components/HoleDetails";
@@ -13,20 +19,67 @@ export default function Page() {
   const { id } = useLocalSearchParams();
 
   // managed
-  const [currentHole, setCurrentHole] = React.useState<number>(0);
+  const [currentHoleIndex, setCurrentHoleIndex] = React.useState<number>(0);
+  const [location, setLocation] = React.useState<Location.LocationObject>();
+  const [locationSubscription, setLocationSubscription] =
+    React.useState<Location.LocationSubscription | null>(null);
 
   // derived
   const course = getCourseById(id);
 
+  const currentLocation: Coords = {
+    lat: location?.coords.latitude || 0,
+    long: location?.coords.longitude || 0,
+  };
+  const middleLocation: Coords = {
+    lat: sampleHoles[currentHoleIndex].coords.lat,
+    long: sampleHoles[currentHoleIndex].coords.long,
+  };
+
+  const distance: number = roundNumber(
+    calculateDistanceInYards(currentLocation, middleLocation)
+  );
+
+  React.useEffect(() => {
+    const startWatching = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+        return;
+      }
+
+      const subscription = await Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.Highest,
+          timeInterval: 5000, // Update every 5 seconds
+          distanceInterval: 1, // Update every 10 meters
+        },
+        (newLocation) => {
+          setLocation(newLocation);
+        }
+      );
+      setLocationSubscription(subscription);
+    };
+
+    startWatching();
+
+    // Cleanup subscription on component unmount
+    return () => {
+      if (locationSubscription) {
+        locationSubscription.remove();
+      }
+    };
+  }, [locationSubscription]);
+
   const onHoleChange = (direction: "up" | "down") => {
     if (direction === "up") {
-      currentHole + 1 === sampleHoles.length
-        ? setCurrentHole(0)
-        : setCurrentHole(currentHole + 1);
+      currentHoleIndex + 1 === sampleHoles.length
+        ? setCurrentHoleIndex(0)
+        : setCurrentHoleIndex(currentHoleIndex + 1);
     } else {
-      currentHole - 1 < 0
-        ? setCurrentHole(sampleHoles.length - 1)
-        : setCurrentHole(currentHole - 1);
+      currentHoleIndex - 1 < 0
+        ? setCurrentHoleIndex(sampleHoles.length - 1)
+        : setCurrentHoleIndex(currentHoleIndex - 1);
     }
   };
 
@@ -42,11 +95,11 @@ export default function Page() {
     >
       <CourseHeader course={course} />
 
-      <Distances front={104} middle={115} back={119} />
+      <Distances front={distance - 10} middle={distance} back={distance + 10} />
 
       <HoleDetails
-        hole={sampleHoles[currentHole].hole}
-        par={sampleHoles[currentHole].par}
+        hole={sampleHoles[currentHoleIndex].hole}
+        par={sampleHoles[currentHoleIndex].par}
         onHoleChange={onHoleChange}
       />
     </View>

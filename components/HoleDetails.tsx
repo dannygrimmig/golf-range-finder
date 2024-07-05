@@ -19,7 +19,7 @@ export function HoleDetails(props: {
         alignItems: "center",
       }}
     >
-      <Pressable onPress={() => onHoleChange("up")} style={{ padding: 16 }}>
+      <Pressable onPress={() => onHoleChange("down")} style={{ padding: 16 }}>
         <Text style={{ fontFamily: "OutfitLight" }}>Last</Text>
       </Pressable>
 
