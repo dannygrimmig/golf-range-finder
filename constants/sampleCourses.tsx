@@ -1,13 +1,9 @@
 import { Course } from "@/definitions/course";
 import { sampleHoles } from "./sampleHoles";
+import { CHATHAM_SEASIIDE_LINKS } from "@/api/courses/chatham_seaside_links";
 
 export const fakeCourses: Course[] = [
-  {
-    id: "0",
-    name: "Chatham Seaside Links",
-    location: "Chatham, MA",
-    holes: sampleHoles,
-  },
+  CHATHAM_SEASIIDE_LINKS,
   {
     id: "1",
     name: "Pebble Beach",
