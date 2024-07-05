@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as Location from "expo-location";
 
 import { useLocalSearchParams } from "expo-router";
 import { Text, View } from "react-native";
@@ -49,6 +48,7 @@ export default function Page() {
     calculateDistanceInYards(currentLocation, greenLocation)
   );
 
+  // helpers
   const onHoleChange = (direction: "up" | "down") => {
     if (direction === "up") {
       currentHoleIndex + 1 === holes.length
