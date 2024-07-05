@@ -1,11 +1,10 @@
-import { fakeCourses } from "@/constants/sampleCourses";
 import { Coords } from "@/definitions/hole";
-import { CHATHAM_SEASIIDE_LINKS } from "./courses/chatham_seaside_links";
 import { Course } from "@/definitions/course";
+import { COURSES } from "./courses";
 
 // Get Courses
 export const getCourses = () => {
-  return fakeCourses;
+  return COURSES;
 };
 
 // GET /courses/id
@@ -20,7 +19,7 @@ export const getCourseById = (
   } else {
     return undefined;
   }
-  return fakeCourses.find((course) => course.id === query);
+  return COURSES.find((course) => course.id === query);
 };
 
 // Calculate Distance
