@@ -1,5 +1,7 @@
 import { fakeCourses } from "@/constants/sampleCourses";
 import { Coords } from "@/definitions/hole";
+import { CHATHAM_SEASIIDE_LINKS } from "./courses/chatham_seaside_links";
+import { Course } from "@/definitions/course";
 
 // Get Courses
 export const getCourses = () => {
@@ -7,8 +9,18 @@ export const getCourses = () => {
 };
 
 // GET /courses/id
-export const getCourseById = (id: string) => {
-  return fakeCourses.find((course) => course.id === id);
+export const getCourseById = (
+  id: string | string[] | undefined
+): Course | undefined => {
+  let query: string;
+  if (typeof id === "string") {
+    query = id;
+  } else if (Array.isArray(id) && id.length > 0) {
+    query = id[0];
+  } else {
+    return undefined;
+  }
+  return fakeCourses.find((course) => course.id === query);
 };
 
 // Calculate Distance

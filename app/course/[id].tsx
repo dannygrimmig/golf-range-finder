@@ -2,7 +2,7 @@ import * as React from "react";
 import * as Location from "expo-location";
 
 import { useLocalSearchParams } from "expo-router";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import {
   calculateDistanceInYards,
   getCourseById,
@@ -13,6 +13,7 @@ import { Distances } from "@/components/Distances";
 import { HoleDetails } from "@/components/HoleDetails";
 import { Coords, Hole } from "@/definitions/hole";
 import { Course } from "@/definitions/course";
+import { useLocation } from "@/hooks/useLocation";
 
 export default function Page() {
   // imported
@@ -20,57 +21,33 @@ export default function Page() {
 
   // managed
   const [currentHoleIndex, setCurrentHoleIndex] = React.useState<number>(0);
-  const [location, setLocation] = React.useState<Location.LocationObject>();
-  const [locationSubscription, setLocationSubscription] =
-    React.useState<Location.LocationSubscription | null>(null);
+  const { location } = useLocation();
 
   // derived
-  const course: Course = getCourseById(id);
+  let course: Course | undefined = getCourseById(id);
+
+  if (!course) {
+    return (
+      <View>
+        <Text>No Course</Text>
+      </View>
+    );
+  }
+
   const holes: Hole[] = course?.holes;
 
   const currentLocation: Coords = {
     lat: location?.coords.latitude || 0,
     long: location?.coords.longitude || 0,
   };
-  const middleLocation: Coords = {
+  const greenLocation: Coords = {
     lat: holes[currentHoleIndex].coords.lat,
     long: holes[currentHoleIndex].coords.long,
   };
 
   const distance: number = roundNumber(
-    calculateDistanceInYards(currentLocation, middleLocation)
+    calculateDistanceInYards(currentLocation, greenLocation)
   );
-
-  React.useEffect(() => {
-    const startWatching = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.log("Permission to access location was denied");
-        return;
-      }
-
-      const subscription = await Location.watchPositionAsync(
-        {
-          accuracy: Location.Accuracy.Highest,
-          timeInterval: 5000, // Update every 5 seconds
-          distanceInterval: 1, // Update every 1 meters
-        },
-        (newLocation) => {
-          setLocation(newLocation);
-        }
-      );
-      setLocationSubscription(subscription);
-    };
-
-    startWatching();
-
-    // Cleanup subscription on component unmount
-    return () => {
-      if (locationSubscription) {
-        locationSubscription.remove();
-      }
-    };
-  }, [locationSubscription]);
 
   const onHoleChange = (direction: "up" | "down") => {
     if (direction === "up") {

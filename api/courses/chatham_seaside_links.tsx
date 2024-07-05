@@ -77,7 +77,7 @@ const holes: Hole[] = [
 ];
 
 export const CHATHAM_SEASIIDE_LINKS: Course = {
-  id: "0",
+  id: "chatham_seaside_link",
   name: "Chatham Seaside Links",
   location: "Chatham, MA",
   holes: holes,
