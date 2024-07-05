@@ -1,32 +1,63 @@
 import * as React from "react";
 
 import { useLocalSearchParams } from "expo-router";
-import { View } from "react-native";
-import { getCourseById } from "@/api/service";
+import { Text, View } from "react-native";
+import {
+  calculateDistanceInYards,
+  getCourseById,
+  roundNumber,
+} from "@/api/service";
 import { CourseHeader } from "@/components/CourseHeader";
 import { Distances } from "@/components/Distances";
 import { HoleDetails } from "@/components/HoleDetails";
-import { sampleHoles } from "@/constants/sampleHoles";
+import { Coords, Hole } from "@/definitions/hole";
+import { Course } from "@/definitions/course";
+import { useLocation } from "@/hooks/useLocation";
 
 export default function Page() {
   // imported
   const { id } = useLocalSearchParams();
 
   // managed
-  const [currentHole, setCurrentHole] = React.useState<number>(0);
+  const [currentHoleIndex, setCurrentHoleIndex] = React.useState<number>(0);
+  const { location } = useLocation();
 
   // derived
-  const course = getCourseById(id);
+  let course: Course | undefined = getCourseById(id);
 
+  if (!course) {
+    return (
+      <View>
+        <Text>No Course</Text>
+      </View>
+    );
+  }
+
+  const holes: Hole[] = course?.holes;
+
+  const currentLocation: Coords = {
+    lat: location?.coords.latitude || 0,
+    long: location?.coords.longitude || 0,
+  };
+  const greenLocation: Coords = {
+    lat: holes[currentHoleIndex].coords.lat,
+    long: holes[currentHoleIndex].coords.long,
+  };
+
+  const distance: number = roundNumber(
+    calculateDistanceInYards(currentLocation, greenLocation)
+  );
+
+  // helpers
   const onHoleChange = (direction: "up" | "down") => {
     if (direction === "up") {
-      currentHole + 1 === sampleHoles.length
-        ? setCurrentHole(0)
-        : setCurrentHole(currentHole + 1);
+      currentHoleIndex + 1 === holes.length
+        ? setCurrentHoleIndex(0)
+        : setCurrentHoleIndex(currentHoleIndex + 1);
     } else {
-      currentHole - 1 < 0
-        ? setCurrentHole(sampleHoles.length - 1)
-        : setCurrentHole(currentHole - 1);
+      currentHoleIndex - 1 < 0
+        ? setCurrentHoleIndex(holes.length - 1)
+        : setCurrentHoleIndex(currentHoleIndex - 1);
     }
   };
 
@@ -42,11 +73,11 @@ export default function Page() {
     >
       <CourseHeader course={course} />
 
-      <Distances front={104} middle={115} back={119} />
+      <Distances front={distance - 10} middle={distance} back={distance + 10} />
 
       <HoleDetails
-        hole={sampleHoles[currentHole].hole}
-        par={sampleHoles[currentHole].par}
+        hole={holes[currentHoleIndex].hole}
+        par={holes[currentHoleIndex].par}
         onHoleChange={onHoleChange}
       />
     </View>
