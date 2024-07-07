@@ -13,6 +13,7 @@ import { HoleDetails } from "@/components/HoleDetails";
 import { Coords, Hole } from "@/definitions/hole";
 import { Course } from "@/definitions/course";
 import { useLocation } from "@/hooks/useLocation";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function Page() {
   // imported
@@ -62,24 +63,30 @@ export default function Page() {
   };
 
   return (
-    <View
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        flex: 1,
-        padding: 16,
-        backgroundColor: "white",
-      }}
-    >
-      <CourseHeader course={course} />
+    <SafeAreaProvider>
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          flex: 1,
+          padding: 16,
+          backgroundColor: "white",
+        }}
+      >
+        <CourseHeader course={course} />
 
-      <Distances front={distance - 10} middle={distance} back={distance + 10} />
+        <Distances
+          front={distance - 10}
+          middle={distance}
+          back={distance + 10}
+        />
 
-      <HoleDetails
-        hole={holes[currentHoleIndex].hole}
-        par={holes[currentHoleIndex].par}
-        onHoleChange={onHoleChange}
-      />
-    </View>
+        <HoleDetails
+          hole={holes[currentHoleIndex].hole}
+          par={holes[currentHoleIndex].par}
+          onHoleChange={onHoleChange}
+        />
+      </View>
+    </SafeAreaProvider>
   );
 }

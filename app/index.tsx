@@ -4,6 +4,7 @@ import { FlatList, View, StyleSheet, TextInput } from "react-native";
 import { CourseSearchCard } from "@/components/CourseSearchCard";
 import { Course } from "@/definitions/course";
 import { getCourses } from "@/api/service";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function Index() {
   // managed
@@ -21,30 +22,32 @@ export default function Index() {
   );
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "white",
-      }}
-    >
-      <TextInput
-        onChangeText={(text) => setSearch(text)}
-        value={search}
-        style={indexStyles.input}
-        placeholder="search courses"
-      />
-
-      <FlatList
-        data={filteredCourses}
-        renderItem={({ item }) => <CourseSearchCard course={item} />}
+    <SafeAreaProvider>
+      <View
         style={{
-          width: "100%",
-          paddingHorizontal: 24,
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "white",
         }}
-      />
-    </View>
+      >
+        <TextInput
+          onChangeText={(text) => setSearch(text)}
+          value={search}
+          style={indexStyles.input}
+          placeholder="search courses"
+        />
+
+        <FlatList
+          data={filteredCourses}
+          renderItem={({ item }) => <CourseSearchCard course={item} />}
+          style={{
+            width: "100%",
+            paddingHorizontal: 24,
+          }}
+        />
+      </View>
+    </SafeAreaProvider>
   );
 }
 
