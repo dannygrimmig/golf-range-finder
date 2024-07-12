@@ -68,6 +68,7 @@ export default function Page() {
       <Stack.Screen
         options={{
           headerTitle: () => <AppHeaderTitle title={course.name} />,
+          headerBackTitleVisible: false,
         }}
       />
 
