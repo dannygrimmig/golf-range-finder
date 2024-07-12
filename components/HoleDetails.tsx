@@ -11,7 +11,7 @@ export function HoleDetails(props: {
     <View
       style={{
         padding: 16,
-        backgroundColor: "lightgray",
+        backgroundColor: "#226D47",
         borderRadius: 32,
         display: "flex",
         flexDirection: "row",
@@ -20,14 +20,14 @@ export function HoleDetails(props: {
       }}
     >
       <Pressable onPress={() => onHoleChange("down")} style={{ padding: 16 }}>
-        <Text style={{ fontFamily: "OutfitLight" }}>Last</Text>
+        <Text style={{ color: "white", fontFamily: "OutfitLight" }}>Last</Text>
       </Pressable>
 
       <HoleDetail detail={hole} description="Hole" />
       <HoleDetail detail={par} description="Par" />
 
       <Pressable onPress={() => onHoleChange("up")} style={{ padding: 16 }}>
-        <Text style={{ fontFamily: "OutfitLight" }}>Next</Text>
+        <Text style={{ color: "white", fontFamily: "OutfitLight" }}>Next</Text>
       </Pressable>
     </View>
   );
@@ -44,6 +44,7 @@ function HoleDetail(props: { detail: number; description: string }) {
     >
       <Text
         style={{
+          color: "white",
           fontFamily: "OutfitRegular",
           fontSize: 32,
         }}
@@ -52,6 +53,7 @@ function HoleDetail(props: { detail: number; description: string }) {
       </Text>
       <Text
         style={{
+          color: "white",
           fontFamily: "OutfitLight",
         }}
       >
