@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { Text, View } from "react-native";
 import {
   calculateDistanceInYards,
@@ -14,6 +14,7 @@ import { Coords, Hole } from "@/definitions/hole";
 import { Course } from "@/definitions/course";
 import { useLocation } from "@/hooks/useLocation";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { AppHeaderTitle } from "@/components/AppHeader/AppHeaderTitle";
 
 export default function Page() {
   // imported
@@ -64,6 +65,12 @@ export default function Page() {
 
   return (
     <SafeAreaProvider>
+      <Stack.Screen
+        options={{
+          headerTitle: () => <AppHeaderTitle title={course.name} />,
+        }}
+      />
+
       <View
         style={{
           display: "flex",

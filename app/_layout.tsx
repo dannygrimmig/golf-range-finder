@@ -2,6 +2,8 @@ import * as React from "react";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { Image, Text } from "react-native";
+import { AppHeaderTitle } from "@/components/AppHeader/AppHeaderTitle";
+import { AppLogoImage } from "@/components/AppHeader/AppLogoImage";
 
 export default function RootLayout() {
   const [loaded] = useFonts({
@@ -30,16 +32,10 @@ export default function RootLayout() {
         headerTitleStyle: {
           fontWeight: "bold",
         },
-        headerRight: () => <LogoTitle />,
-        headerTitle: () => (
-          <Text style={{ fontFamily: "OutfitRegular", color: "white" }}>
-            Green Retriever
-          </Text>
-        ),
+        headerRight: () => <AppLogoImage />,
+        headerTitle: () => <AppHeaderTitle title="Green Retriever" />,
       }}
-    >
-      <Stack.Screen name="index" />
-    </Stack>
+    />
   );
 }
 
