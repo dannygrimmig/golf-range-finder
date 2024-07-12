@@ -7,9 +7,9 @@ import {
   getCourseById,
   roundNumber,
 } from "@/api/service";
-import { CourseHeader } from "@/components/CourseHeader";
-import { Distances } from "@/components/Distances";
-import { HoleDetails } from "@/components/HoleDetails";
+import { CourseHeader } from "@/components/Course/CourseHeader";
+import { Distances } from "@/components/Course/Distances";
+import { HoleDetails } from "@/components/Course/HoleDetails";
 import { Coords, Hole } from "@/definitions/hole";
 import { Course } from "@/definitions/course";
 import { useLocation } from "@/hooks/useLocation";
