@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { Stack, useLocalSearchParams } from "expo-router";
-import { Text, View } from "react-native";
+import { FlatList, Pressable, Text, View } from "react-native";
 import {
   calculateDistanceInYards,
   getCourseById,
@@ -83,6 +83,20 @@ export default function Page() {
       >
         <CourseHeader course={course} />
 
+        <HoleRow
+          holes={holes.slice(0, 9)}
+          selectedHole={currentHoleIndex + 1}
+          onHoleSelect={(number) => setCurrentHoleIndex(number - 1)}
+        />
+
+        {holes.length > 9 && (
+          <HoleRow
+            holes={holes.slice(9, 18)}
+            selectedHole={currentHoleIndex + 1}
+            onHoleSelect={(number) => setCurrentHoleIndex(number - 1)}
+          />
+        )}
+
         <Distances
           front={distance - 10}
           middle={distance}
@@ -96,5 +110,60 @@ export default function Page() {
         />
       </View>
     </SafeAreaProvider>
+  );
+}
+
+function HoleRow(props: {
+  holes: Hole[];
+  selectedHole: number;
+  onHoleSelect: (number: number) => void;
+}) {
+  return (
+    <View style={{ marginTop: 8 }}>
+      <FlatList
+        data={props.holes}
+        renderItem={({ item }) => (
+          <HoleSelection
+            hole={item}
+            onClick={(number) => {
+              props.onHoleSelect(number);
+            }}
+            selected={props.selectedHole === item.hole}
+          />
+        )}
+        contentContainerStyle={{
+          flex: 1,
+          justifyContent: "center",
+          gap: 8,
+          marginBottom: 4,
+        }}
+        horizontal={true}
+      />
+    </View>
+  );
+}
+
+function HoleSelection(props: {
+  hole: Hole;
+  onClick: (number: number) => void;
+  selected: boolean;
+}) {
+  return (
+    <Pressable onPress={() => props.onClick(props.hole.hole)}>
+      <Text
+        style={{
+          backgroundColor: props.selected ? "darkgray" : "lightgray",
+          fontFamily: "OutfitRegular",
+          textAlign: "center",
+          padding: 8,
+          height: 30,
+          width: 30,
+          borderColor: "black",
+          borderWidth: 0.5,
+        }}
+      >
+        {props.hole.hole}
+      </Text>
+    </Pressable>
   );
 }

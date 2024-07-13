@@ -8,7 +8,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function Index() {
   // managed
-  const [search, setSearch] = React.useState("");
+  const [search, setSearch] = React.useState<string>("");
   const [courses, setCourses] = React.useState<Course[]>([]);
 
   React.useEffect(() => {
@@ -17,12 +17,12 @@ export default function Index() {
   });
 
   // derived
-  const filteredCourses = courses.filter((course) =>
+  const filteredCourses: Course[] = courses.filter((course) =>
     course.name.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
-    <SafeAreaProvider style={{ padding: 8, backgroundColor: "white" }}>
+    <SafeAreaProvider style={{ padding: 4, backgroundColor: "white" }}>
       <View
         style={{
           flex: 1,
