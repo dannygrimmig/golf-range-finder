@@ -28,11 +28,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingVertical: 16,
-    marginVertical: 4,
     borderColor: "black",
     borderBottomWidth: 0.5,
-    shadowColor: "black",
-    shadowOffset: { width: 2, height: 2 },
   },
   course_name: {
     fontSize: 16,

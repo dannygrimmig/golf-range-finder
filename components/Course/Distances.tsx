@@ -8,14 +8,7 @@ export function Distances(props: {
   const { front, middle, back } = props;
 
   return (
-    <View
-      style={{
-        flex: 1,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <View style={styles.distances_container}>
       <View>
         <View>
           <Text style={styles.front_back}>{back}</Text>
@@ -35,6 +28,12 @@ export function Distances(props: {
 }
 
 const styles = StyleSheet.create({
+  distances_container: {
+    flex: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   middle: {
     fontSize: 112,
     padding: 0,

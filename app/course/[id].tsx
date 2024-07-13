@@ -1,19 +1,20 @@
 import * as React from "react";
 
-import { useLocalSearchParams } from "expo-router";
-import { Text, View } from "react-native";
+import { Stack, useLocalSearchParams } from "expo-router";
+import { FlatList, Pressable, Text, View } from "react-native";
 import {
   calculateDistanceInYards,
   getCourseById,
   roundNumber,
 } from "@/api/service";
-import { CourseHeader } from "@/components/CourseHeader";
-import { Distances } from "@/components/Distances";
-import { HoleDetails } from "@/components/HoleDetails";
+import { CourseHeader } from "@/components/Course/CourseHeader";
+import { Distances } from "@/components/Course/Distances";
+import { HoleDetails } from "@/components/Course/HoleDetails";
 import { Coords, Hole } from "@/definitions/hole";
 import { Course } from "@/definitions/course";
 import { useLocation } from "@/hooks/useLocation";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { AppHeaderTitle } from "@/components/AppHeader/AppHeaderTitle";
 
 export default function Page() {
   // imported
@@ -62,8 +63,18 @@ export default function Page() {
     }
   };
 
+  const holesPerRow = 9;
+  const numRows = Math.ceil(holes.length / holesPerRow);
+
   return (
     <SafeAreaProvider>
+      <Stack.Screen
+        options={{
+          headerTitle: () => <AppHeaderTitle title={course.name} />,
+          headerBackTitleVisible: false,
+        }}
+      />
+
       <View
         style={{
           display: "flex",
@@ -74,6 +85,22 @@ export default function Page() {
         }}
       >
         <CourseHeader course={course} />
+
+        <View>
+          {Array.from({ length: numRows }).map((_, rowIndex) => {
+            const start = rowIndex * holesPerRow;
+            const end = start + holesPerRow;
+
+            return (
+              <HoleRow
+                key={rowIndex}
+                holes={holes.slice(start, end)}
+                selectedHole={currentHoleIndex + 1}
+                onHoleSelect={(number) => setCurrentHoleIndex(number - 1)}
+              />
+            );
+          })}
+        </View>
 
         <Distances
           front={distance - 10}
@@ -88,5 +115,60 @@ export default function Page() {
         />
       </View>
     </SafeAreaProvider>
+  );
+}
+
+function HoleRow(props: {
+  holes: Hole[];
+  selectedHole: number;
+  onHoleSelect: (number: number) => void;
+}) {
+  return (
+    <View style={{ marginTop: 8 }}>
+      <FlatList
+        data={props.holes}
+        renderItem={({ item }) => (
+          <HoleSelection
+            hole={item}
+            onClick={(number) => {
+              props.onHoleSelect(number);
+            }}
+            selected={props.selectedHole === item.hole}
+          />
+        )}
+        contentContainerStyle={{
+          flex: 1,
+          justifyContent: "center",
+          gap: 8,
+          marginBottom: 4,
+        }}
+        horizontal={true}
+      />
+    </View>
+  );
+}
+
+function HoleSelection(props: {
+  hole: Hole;
+  onClick: (number: number) => void;
+  selected: boolean;
+}) {
+  return (
+    <Pressable onPress={() => props.onClick(props.hole.hole)}>
+      <Text
+        style={{
+          backgroundColor: props.selected ? "darkgray" : "lightgray",
+          fontFamily: "OutfitRegular",
+          textAlign: "center",
+          padding: 8,
+          height: 30,
+          width: 30,
+          borderColor: "black",
+          borderWidth: 0.5,
+        }}
+      >
+        {props.hole.hole}
+      </Text>
+    </Pressable>
   );
 }

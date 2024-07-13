@@ -8,7 +8,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function Index() {
   // managed
-  const [search, setSearch] = React.useState("");
+  const [search, setSearch] = React.useState<string>("");
   const [courses, setCourses] = React.useState<Course[]>([]);
 
   React.useEffect(() => {
@@ -17,25 +17,24 @@ export default function Index() {
   });
 
   // derived
-  const filteredCourses = courses.filter((course) =>
+  const filteredCourses: Course[] = courses.filter((course) =>
     course.name.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider style={{ padding: 4, backgroundColor: "white" }}>
       <View
         style={{
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: "white",
         }}
       >
         <TextInput
           onChangeText={(text) => setSearch(text)}
           value={search}
           style={indexStyles.input}
-          placeholder="search courses"
+          placeholder="Search Courses"
         />
 
         <FlatList
@@ -55,9 +54,9 @@ const indexStyles = StyleSheet.create({
   input: {
     width: "95%",
     height: 40,
-    borderWidth: 1,
-    borderRadius: 4,
+    borderBottomWidth: 0.5,
+    borderBottomColor: "black",
     padding: 10,
-    fontFamily: "OutfitRegular",
+    fontFamily: "OutfitLight",
   },
 });
