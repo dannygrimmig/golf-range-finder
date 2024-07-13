@@ -14,7 +14,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.dannygrimmig.golfrangefinder"
+      "bundleIdentifier": "com.dannygrimmig.golfrangefinder",
+      "buildNumber": 2
     },
     "android": {
       "adaptiveIcon": {
