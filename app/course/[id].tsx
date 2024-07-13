@@ -63,6 +63,9 @@ export default function Page() {
     }
   };
 
+  const holesPerRow = 9;
+  const numRows = Math.ceil(holes.length / holesPerRow);
+
   return (
     <SafeAreaProvider>
       <Stack.Screen
@@ -83,19 +86,21 @@ export default function Page() {
       >
         <CourseHeader course={course} />
 
-        <HoleRow
-          holes={holes.slice(0, 9)}
-          selectedHole={currentHoleIndex + 1}
-          onHoleSelect={(number) => setCurrentHoleIndex(number - 1)}
-        />
+        <View>
+          {Array.from({ length: numRows }).map((_, rowIndex) => {
+            const start = rowIndex * holesPerRow;
+            const end = start + holesPerRow;
 
-        {holes.length > 9 && (
-          <HoleRow
-            holes={holes.slice(9, 18)}
-            selectedHole={currentHoleIndex + 1}
-            onHoleSelect={(number) => setCurrentHoleIndex(number - 1)}
-          />
-        )}
+            return (
+              <HoleRow
+                key={rowIndex}
+                holes={holes.slice(start, end)}
+                selectedHole={currentHoleIndex + 1}
+                onHoleSelect={(number) => setCurrentHoleIndex(number - 1)}
+              />
+            );
+          })}
+        </View>
 
         <Distances
           front={distance - 10}
