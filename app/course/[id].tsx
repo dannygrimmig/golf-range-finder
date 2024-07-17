@@ -30,7 +30,7 @@ export default function Page() {
   if (!course) {
     return (
       <View>
-        <Text>No Course</Text>
+        <Text>Error Page</Text>
       </View>
     );
   }
